@@ -1,5 +1,6 @@
 [
   {
+    "name": "integer",
     "start": ["q0"],
     "finish": ["q1"],
     "inputs": {

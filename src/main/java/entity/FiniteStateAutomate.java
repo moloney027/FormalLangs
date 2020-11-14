@@ -8,12 +8,21 @@ import java.util.Set;
 @JsonAutoDetect
 public class FiniteStateAutomate {
 
+    private String name;
     private Set<String> start;
     private Set<String> finish;
     private Map<String, Set<String>> inputs;
     private Map<String, Map<String, Set<String>>> matrix;
 
     public FiniteStateAutomate() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Set<String> getStart() {
