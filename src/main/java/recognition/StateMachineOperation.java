@@ -37,7 +37,7 @@ public class StateMachineOperation {
             listOfInputs.add(ops_);
         }
         if (checkNotNull(inputs.get("ops2"))) {
-            String ops_ = inputs.get("ops2").stream().findFirst().get().replaceAll("[^&|+-]", "");
+            String ops_ = inputs.get("ops2").stream().findFirst().get().replaceAll("[^&|+\\-]", "");
             listOfInputs.add("ops2");
             listOfInputs.add(ops_);
         }
@@ -53,9 +53,9 @@ public class StateMachineOperation {
         }
         String signForId_ = null, signForInteger_ = null, signForSpecial_ = null;
         if (fsa.getName().equals("id") && checkNotNull(inputs.get("sign"))) {
-            signForId_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-<>!#*/&$@~]", "");
+            signForId_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^&+\\-<>!#*/$@~]", "");
         } else if ((fsa.getName().equals("integer") || fsa.getName().equals("real")) && (checkNotNull(inputs.get("sign")))) {
-            signForInteger_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-]", "");
+            signForInteger_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+\\-]", "");
         } else if (fsa.getName().equals("special") && checkNotNull(inputs.get("sign"))) {
             signForSpecial_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^.,:;!?(){}\\[\\]]", "");
         }
@@ -71,7 +71,6 @@ public class StateMachineOperation {
             listOfInputs.add("sign");
             listOfInputs.add(signForSpecial_);
         }
-
 
         for (int i = 1; i < listOfInputs.size(); i += 2) {
             if (listOfInputs.get(i - 1).equals("digit")) {
@@ -91,10 +90,9 @@ public class StateMachineOperation {
                 newInputs.put(listOfInputs.get(i - 1), new HashSet<>(newSetForInput));
                 newSetForInput.clear();
             } else if (listOfInputs.get(i - 1).equals("whitespace")) {
-                char[] chars = listOfInputs.get(i).toCharArray();
-                for (int k = 0; k < chars.length; k += 2) {
-                    newSetForInput.add(String.valueOf(chars[k]) + (chars[k + 1]));
-                }
+                newSetForInput.add("\n");
+                newSetForInput.add("\r");
+                newSetForInput.add("\t");
                 newSetForInput.add(" ");
                 newInputs.put(listOfInputs.get(i - 1), new HashSet<>(newSetForInput));
                 newSetForInput.clear();

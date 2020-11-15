@@ -19,7 +19,7 @@ public class Main {
                     automate.setInputs(smo.forCreateInputs(automate));
 //                    System.out.println(automate.getInputs());
                 }
-                System.out.println("Автомат: " + automate.getName() + smo.max(automate, "123", 0));
+                System.out.println("Автомат: " + automate.getName() + smo.max(automate, "\n", 0));
             }
         }
     }
