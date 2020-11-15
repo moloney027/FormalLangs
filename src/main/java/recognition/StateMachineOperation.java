@@ -23,25 +23,30 @@ public class StateMachineOperation {
             listOfInputs.add("digit");
             listOfInputs.add(digit_);
         }
-        if (checkNotNull(inputs.get("bool"))) {
-            String bool_ = inputs.get("bool").stream().findFirst().get().replaceAll("[^tf]", "");
-            listOfInputs.add("bool");
-            listOfInputs.add(bool_);
-        }
         if (checkNotNull(inputs.get("exp"))) {
             String exp_ = inputs.get("exp").stream().findFirst().get().replaceAll("[^eE]", "");
             listOfInputs.add("exp");
             listOfInputs.add(exp_);
         }
         if (checkNotNull(inputs.get("ops"))) {
-            String ops_ = inputs.get("ops").stream().findFirst().get().replaceAll("[^+-<>=*/]", "");
+            String ops_ = inputs.get("ops").stream().findFirst().get().replaceAll("[^*/%]", "");
             listOfInputs.add("ops");
             listOfInputs.add(ops_);
         }
+        if (checkNotNull(inputs.get("ops2"))) {
+            String ops_ = inputs.get("ops2").stream().findFirst().get().replaceAll("[^&|+-]", "");
+            listOfInputs.add("ops2");
+            listOfInputs.add(ops_);
+        }
         if (checkNotNull(inputs.get("whitespace"))) {
-            String whitespace_ = inputs.get("whitespace").stream().findFirst().get().replaceAll("^\\s+", "");
+            String whitespace_ = inputs.get("whitespace").stream().findFirst().get().replaceAll("[x='| ]", "");
             listOfInputs.add("whitespace");
             listOfInputs.add(whitespace_);
+        }
+        if (checkNotNull(inputs.get("char"))) {
+            String char_ = inputs.get("char").stream().findFirst().get().replaceAll("[^a-wy-zA-WY-Z]", "");
+            listOfInputs.add("char");
+            listOfInputs.add(char_);
         }
         String sign_ = null;
         if (fsa.getName().equals("id") && checkNotNull(inputs.get("sign"))) {
@@ -53,16 +58,7 @@ public class StateMachineOperation {
             listOfInputs.add("sign");
             listOfInputs.add(sign_);
         }
-        String char_ = null;
-        if (fsa.getName().equals("real") && checkNotNull(inputs.get("char"))) {
-            char_ = inputs.get("char").stream().findFirst().get().replaceAll("[^a-z]", "");
-        } else if (fsa.getName().equals("id") && checkNotNull(inputs.get("char"))) {
-            char_ = inputs.get("char").stream().findFirst().get().replaceAll("[^a-zA-Z]", "");
-        }
-        if (char_ != null) {
-            listOfInputs.add("char");
-            listOfInputs.add(char_);
-        }
+
 
         for (int i = 1; i < listOfInputs.size(); i += 2) {
             if (listOfInputs.get(i - 1).equals("digit")) {
@@ -72,18 +68,21 @@ public class StateMachineOperation {
                 }
                 newInputs.put(listOfInputs.get(i - 1), new HashSet<>(newSetForInput));
                 newSetForInput.clear();
-            } else if (listOfInputs.get(i - 1).equals("real")) {
-                char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                for (char ch : alphabet) {
-                    newSetForInput.add(String.valueOf(ch));
+            } else if (listOfInputs.get(i - 1).equals("char")) {
+                char[] chars = listOfInputs.get(i).toCharArray();
+                for (int k = 0; k < chars.length; k += 2) {
+                    for (char ch = chars[k]; ch <= chars[k + 1]; ch++) {
+                        newSetForInput.add(String.valueOf(ch));
+                    }
                 }
                 newInputs.put(listOfInputs.get(i - 1), new HashSet<>(newSetForInput));
                 newSetForInput.clear();
-            } else if (listOfInputs.get(i - 1).equals("id")) {
-                char[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-                for (char ch : alphabet) {
-                    newSetForInput.add(String.valueOf(ch));
+            } else if (listOfInputs.get(i - 1).equals("whitespace")) {
+                char[] chars = listOfInputs.get(i).toCharArray();
+                for (int k = 0; k < chars.length; k += 2) {
+                    newSetForInput.add(String.valueOf(chars[k]) + (chars[k + 1]));
                 }
+                newSetForInput.add(" ");
                 newInputs.put(listOfInputs.get(i - 1), new HashSet<>(newSetForInput));
                 newSetForInput.clear();
             } else {
@@ -104,13 +103,6 @@ public class StateMachineOperation {
         String previousState;
         int count = 0;
         for (char ch : charsOfInput) {
-            boolean check = false;
-            for (Set<String> valInp : fsa.getInputs().values()) {
-                if (valInp.contains(String.valueOf(ch))) {
-                    check = true;
-                }
-            }
-            if (!check) break;
             previousState = currentState;
             currentState = findState(fsa, currentState, ch);
             if (currentState == null) {
@@ -119,7 +111,6 @@ public class StateMachineOperation {
             }
             count++;
         }
-
         if (count != 0 && fsa.getFinish().contains(currentState)) {
             pair = Pair.createPair(true, count);
         } else {
@@ -131,6 +122,7 @@ public class StateMachineOperation {
     public String findState(FiniteStateAutomate fsa, String currentState, char item) {
         if (currentState == null) return null;
         Map<String, Set<String>> stateInMatrix = fsa.getMatrix().get(currentState);
+        if (stateInMatrix == null) return null;
         String typeInputs = getType(fsa, item);
         Set<String> nextState = stateInMatrix.get(typeInputs);
         if (nextState == null) return null;

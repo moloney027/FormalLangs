@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class Main {
-    public static final String INPUT = "C:\\Projects\\FormalLangs\\src\\main\\resources\\lexer\\integer.json";
+    public static final String INPUT = "C:\\Projects\\FormalLangs\\src\\main\\resources\\lexer\\operation.json";
     private static final ObjectMapper mapper = new ObjectMapper();
     private static StateMachineOperation smo = new StateMachineOperation();
 
@@ -21,7 +21,7 @@ public class Main {
                 automate.setInputs(smo.forCreateInputs(automate));
             }
             System.out.println(automate.getInputs());
-            System.out.println(smo.max(automate, "+-123-+", 1));
+            System.out.println(smo.max(automate, "*/", 0));
         }
     }
 }

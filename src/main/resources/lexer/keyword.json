@@ -12,6 +12,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -22,6 +23,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -31,6 +33,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q2"],
     "matrix": {
@@ -39,6 +42,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q2"],
     "matrix": {
@@ -47,6 +51,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -56,6 +61,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -66,6 +72,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -75,6 +82,7 @@
     }
   },
   {
+    "name": "keyword",
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {
