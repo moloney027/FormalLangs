@@ -1,7 +1,7 @@
 [
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q7"],
     "matrix": {
@@ -16,7 +16,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -28,7 +28,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {
@@ -41,7 +41,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -52,7 +52,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -64,7 +64,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q6"],
     "matrix": {
@@ -78,7 +78,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {
@@ -91,7 +91,7 @@
   },
   {
     "name": "datatype",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {

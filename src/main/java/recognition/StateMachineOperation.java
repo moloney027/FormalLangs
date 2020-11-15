@@ -1,11 +1,15 @@
 package recognition;
 
 import entity.FiniteStateAutomate;
+import init.CreateListFSA;
 import utils.Pair;
 
+import java.io.IOException;
 import java.util.*;
 
 public class StateMachineOperation {
+
+    public CreateListFSA createListFSA = new CreateListFSA();
 
     public boolean checkNotNull(Set<String> str) {
         if (str != null) return true;
@@ -107,6 +111,27 @@ public class StateMachineOperation {
         return newInputs;
     }
 
+    public String getType(FiniteStateAutomate fsa, char item) {
+        if (fsa.getInputs() != null) {
+            for (Map.Entry<String, Set<String>> inp : fsa.getInputs().entrySet()) {
+                if (inp.getValue().contains(String.valueOf(item))) {
+                    return inp.getKey();
+                }
+            }
+        }
+        return String.valueOf(item);
+    }
+
+    public String findState(FiniteStateAutomate fsa, String currentState, char item) {
+        if (currentState == null) return null;
+        Map<String, Set<String>> stateInMatrix = fsa.getMatrix().get(currentState);
+        if (stateInMatrix == null) return null;
+        String typeInputs = getType(fsa, item);
+        Set<String> nextState = stateInMatrix.get(typeInputs);
+        if (nextState == null) return null;
+        return nextState.stream().findFirst().orElse(null);
+    }
+
     public Pair<Boolean, Integer> max(FiniteStateAutomate fsa, String input, int skip) {
         Pair<Boolean, Integer> pair;
         char[] charsOfInput = input.substring(skip).toCharArray();
@@ -130,24 +155,41 @@ public class StateMachineOperation {
         return pair;
     }
 
-    public String findState(FiniteStateAutomate fsa, String currentState, char item) {
-        if (currentState == null) return null;
-        Map<String, Set<String>> stateInMatrix = fsa.getMatrix().get(currentState);
-        if (stateInMatrix == null) return null;
-        String typeInputs = getType(fsa, item);
-        Set<String> nextState = stateInMatrix.get(typeInputs);
-        if (nextState == null) return null;
-        return nextState.stream().findFirst().orElse(null);
-    }
-
-    public String getType(FiniteStateAutomate fsa, char item) {
-        if (fsa.getInputs() != null) {
-            for (Map.Entry<String, Set<String>> inp : fsa.getInputs().entrySet()) {
-                if (inp.getValue().contains(String.valueOf(item))) {
-                    return inp.getKey();
+    public Pair<String, String> parse(String input, int skip) throws IOException {
+        Integer priority = 0;
+        Integer longValue = 0;
+        String newInput = null;
+        String nameAutomate = null;
+        List<FiniteStateAutomate[]> finiteStateAutomates = createListFSA.create();
+        for (FiniteStateAutomate[] automates : finiteStateAutomates) {
+            for (FiniteStateAutomate fsa : automates) {
+                if (fsa.getInputs() != null) { fsa.setInputs(forCreateInputs(fsa)); }
+                Pair<Boolean, Integer> pairMax = max(fsa, input, skip);
+                if (pairMax.getElement0()) {
+                    if (pairMax.getElement1() > longValue) {
+                        newInput = input.substring(skip, pairMax.getElement1() + skip);
+                        longValue = pairMax.getElement1();
+                        nameAutomate = fsa.getName();
+                        priority = fsa.getPriority();
+                    } else if (pairMax.getElement1().equals(longValue) && fsa.getPriority() > priority) {
+                        newInput = input.substring(skip, pairMax.getElement1() + skip);
+                        longValue = pairMax.getElement1();
+                        nameAutomate = fsa.getName();
+                        priority = fsa.getPriority();
+                    }
                 }
             }
         }
-        return String.valueOf(item);
+        return Pair.createPair(nameAutomate, newInput);
+    }
+
+    public List<Pair<String, String>> createPairs(String str) throws IOException {
+        List<Pair<String, String>> pairList = new ArrayList<>();
+        for (int i = 0; i < str.length();) {
+            Pair<String, String> pairParse = parse(str, i);
+            pairList.add(pairParse);
+            i += pairParse.getElement1().length();
+        }
+        return pairList;
     }
 }

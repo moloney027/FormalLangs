@@ -9,7 +9,7 @@ import java.util.Set;
 public class FiniteStateAutomate {
 
     private String name;
-    private String priority;
+    private Integer priority;
     private Set<String> start;
     private Set<String> finish;
 
@@ -27,11 +27,11 @@ public class FiniteStateAutomate {
         this.name = name;
     }
 
-    public String getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(String priority) {
+    public void setPriority(Integer priority) {
         this.priority = priority;
     }
 

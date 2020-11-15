@@ -1,7 +1,7 @@
 [
   {
     "name": "id",
-    "priority": "0",
+    "priority": 0,
     "start": ["q0"],
     "finish": ["q1", "q2"],
     "inputs": {

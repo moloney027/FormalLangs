@@ -25,6 +25,8 @@ class StateMachineOperationTest {
         finiteStateAutomates = createListFSA.create();
     }
 
+    // для создания автоматов
+
     @Test
     public void testFunctionForCreateFSA() throws IOException {
         List<FiniteStateAutomate[]> finiteStateAutomates = createListFSA.create();
@@ -94,6 +96,8 @@ class StateMachineOperationTest {
             }
         }
     }
+
+    // для первой задачи
 
     @Test
     public void testFunctionMaxForBool() {
@@ -237,6 +241,11 @@ class StateMachineOperationTest {
         Assertions.assertEquals(Pair.createPair(true, 5), smo.max(fsaType[8], "while", 0));
         Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[8], "while", 1));
         Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[8], "WHILE", 0));
+        Assertions.assertEquals("keyword", fsaType[9].getName());
+        if (fsaType[9].getInputs() != null) fsaType[9].setInputs(smo.forCreateInputs(fsaType[9]));
+        Assertions.assertEquals(Pair.createPair(true, 5), smo.max(fsaType[9], "break", 0));
+        Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[9], "break", 1));
+        Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[9], "BReaK", 0));
     }
 
     @Test
@@ -312,5 +321,130 @@ class StateMachineOperationTest {
         Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[0], "t", 0));
         Assertions.assertEquals(Pair.createPair(false, 0), smo.max(fsaType[0], "r", 1));
         Assertions.assertEquals(Pair.createPair(true, 3), smo.max(fsaType[0], "    ", 1));
+    }
+
+    // для второй задачи
+
+    @Test
+    public void testFunctionCreatePairs() throws IOException {
+        String strCode = "while (b > a && !break)";
+        List<Pair<String, String>> listPair = smo.createPairs(strCode);
+        Assertions.assertEquals(Pair.createPair("keyword", "while"), listPair.get(0));
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), listPair.get(1));
+        Assertions.assertEquals(Pair.createPair("special", "("), listPair.get(2));
+        Assertions.assertEquals(Pair.createPair("id", "b"), listPair.get(3));
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), listPair.get(4));
+        Assertions.assertEquals(Pair.createPair("operation", ">"), listPair.get(5));
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), listPair.get(6));
+        Assertions.assertEquals(Pair.createPair("id", "a"), listPair.get(7));
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), listPair.get(8));
+        Assertions.assertEquals(Pair.createPair("operation", "&&"), listPair.get(9));
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), listPair.get(10));
+        Assertions.assertEquals(Pair.createPair("operation", "!"), listPair.get(11));
+        Assertions.assertEquals(Pair.createPair("keyword", "break"), listPair.get(12));
+        Assertions.assertEquals(Pair.createPair("special", ")"), listPair.get(13));
+    }
+
+    @Test
+    public void testFunctionParseForBool() throws IOException {
+        Assertions.assertEquals(Pair.createPair("bool", "true"), smo.parse("true", 0));
+        Assertions.assertEquals(Pair.createPair("bool", "false"), smo.parse("false", 0));
+        Assertions.assertNotEquals(Pair.createPair("bool", "true"), smo.parse("TRUE", 0));
+        Assertions.assertNotEquals(Pair.createPair("bool", "false"), smo.parse("FALSE", 0));
+    }
+
+    @Test
+    public void testFunctionParseForDatatype() throws IOException {
+        Assertions.assertEquals(Pair.createPair("datatype", "boolean"), smo.parse("boolean", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "byte"), smo.parse("byte", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "short"), smo.parse("short", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "int"), smo.parse("int", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "long"), smo.parse("long", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "double"), smo.parse("double", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "float"), smo.parse("float", 0));
+        Assertions.assertEquals(Pair.createPair("datatype", "char"), smo.parse("char", 0));
+    }
+
+    @Test
+    public void testFunctionParseForId() throws IOException {
+        Assertions.assertEquals(Pair.createPair("id", "someid"), smo.parse("someid", 0));
+        Assertions.assertEquals(Pair.createPair("id", "a_d_d___"), smo.parse("a_d_d___", 0));
+        Assertions.assertEquals(Pair.createPair("id", "@"), smo.parse("@", 0));
+        Assertions.assertEquals(Pair.createPair("id", "a"), smo.parse("a", 0));
+        Assertions.assertEquals(Pair.createPair("id", "b"), smo.parse("b", 0));
+        Assertions.assertEquals(Pair.createPair("id", "~>"), smo.parse("~>", 0));
+        Assertions.assertNotEquals(Pair.createPair("id", "1asd"), smo.parse("1asd", 0));
+        Assertions.assertNotEquals(Pair.createPair("id", "_asd"), smo.parse("_asd", 0));
+        Assertions.assertNotEquals(Pair.createPair("id", "'asd"), smo.parse("'asd", 0));
+        Assertions.assertNotEquals(Pair.createPair("id", ""), smo.parse("", 0));
+    }
+
+    @Test
+    public void testFunctionParseForInteger() throws IOException {
+        Assertions.assertEquals(Pair.createPair("integer", "123"), smo.parse("123", 0));
+        Assertions.assertEquals(Pair.createPair("integer", "0000"), smo.parse("0000", 0));
+        Assertions.assertEquals(Pair.createPair("integer", "3"), smo.parse("+123123", 6));
+        Assertions.assertEquals(Pair.createPair("integer", "2"), smo.parse("-100092", 6));
+        Assertions.assertNotEquals(Pair.createPair("integer", "oai11"), smo.parse("oai11", 0));
+        Assertions.assertNotEquals(Pair.createPair("integer", "--000f##fmin"), smo.parse("--000f##fmin", 0));
+    }
+
+    @Test
+    public void testFunctionParseForKeyword() throws IOException {
+        Assertions.assertEquals(Pair.createPair("keyword", "begin"), smo.parse("begin", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "else"), smo.parse("else", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "end"), smo.parse("end", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "if"), smo.parse("if", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "in"), smo.parse("in", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "let"), smo.parse("let", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "then"), smo.parse("then", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "val"), smo.parse("val", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "while"), smo.parse("while", 0));
+        Assertions.assertEquals(Pair.createPair("keyword", "break"), smo.parse("break", 0));
+        Assertions.assertNotEquals(Pair.createPair("keyword", "min"), smo.parse("min", 0));
+        Assertions.assertNotEquals(Pair.createPair("keyword", "vval"), smo.parse("vval", 0));
+    }
+
+    @Test
+    public void testFunctionParseForOperation() throws IOException {
+        Assertions.assertEquals(Pair.createPair("operation", ">"), smo.parse(">", 0));
+        Assertions.assertEquals(Pair.createPair("operation", ">"), smo.parse("<>", 1));
+        Assertions.assertEquals(Pair.createPair("operation", "/"), smo.parse("///", 2));
+        Assertions.assertNotEquals(Pair.createPair("operation", "123"), smo.parse("123", 0));
+        Assertions.assertNotEquals(Pair.createPair("operation", "!!"), smo.parse("!!", 0));
+        Assertions.assertNotEquals(Pair.createPair("operation", "@<>"), smo.parse("@<>", 0));
+    }
+
+    @Test
+    public void testFunctionParseForReal() throws IOException {
+        Assertions.assertEquals(Pair.createPair("real", "+1."), smo.parse("+1.", 0));
+        Assertions.assertEquals(Pair.createPair("real", "-1."), smo.parse("-1.", 0));
+        Assertions.assertEquals(Pair.createPair("real", "2e13"), smo.parse("2e13", 0));
+        Assertions.assertEquals(Pair.createPair("real", "10.1e+10"), smo.parse("10.1e+10", 0));
+        Assertions.assertEquals(Pair.createPair("real", "+123.e2"), smo.parse("+123.e2", 0));
+        Assertions.assertEquals(Pair.createPair("real", "+.1e10"), smo.parse("+.1e10", 0));
+        Assertions.assertEquals(Pair.createPair("real", "-23.e2"), smo.parse("-23.e2", 0));
+        Assertions.assertNotEquals(Pair.createPair("real", "+1.2-e123"), smo.parse("+1.2-e123", 0));
+        Assertions.assertNotEquals(Pair.createPair("real", "+e8"), smo.parse("+e8", 0));
+        Assertions.assertNotEquals(Pair.createPair("real", "-.e1"), smo.parse("-.e1", 0));
+        Assertions.assertNotEquals(Pair.createPair("real", "+."), smo.parse("+.", 0));
+    }
+
+    @Test
+    public void testFunctionParseForSpecial() throws IOException {
+        Assertions.assertEquals(Pair.createPair("special", ";"), smo.parse(";", 0));
+        Assertions.assertEquals(Pair.createPair("special", "("), smo.parse("(", 0));
+        Assertions.assertEquals(Pair.createPair("special", "]"), smo.parse("]", 0));
+        Assertions.assertEquals(Pair.createPair("special", ","), smo.parse(",", 0));
+    }
+
+    @Test
+    public void testFunctionParseForWhitespace() throws IOException {
+        Assertions.assertEquals(Pair.createPair("whitespace", " "), smo.parse(" ", 0));
+        Assertions.assertEquals(Pair.createPair("whitespace", "\n"), smo.parse("\n", 0));
+        Assertions.assertEquals(Pair.createPair("whitespace", "\t"), smo.parse("\t", 0));
+        Assertions.assertEquals(Pair.createPair("whitespace", "\r"), smo.parse("\r", 0));
+        Assertions.assertEquals(Pair.createPair("whitespace", "  "), smo.parse("  ", 0));
+        Assertions.assertNotEquals(Pair.createPair("whitespace", " . "), smo.parse(" . ", 1));
     }
 }

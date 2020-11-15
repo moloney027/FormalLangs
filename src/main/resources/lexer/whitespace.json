@@ -1,7 +1,7 @@
 [
   {
     "name": "whitespace",
-    "priority": "4",
+    "priority": 4,
     "start": ["q0"],
     "finish": ["q1"],
     "inputs": {

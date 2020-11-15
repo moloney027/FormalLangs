@@ -1,7 +1,7 @@
 [
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {
@@ -14,7 +14,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -26,7 +26,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -37,7 +37,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q2"],
     "matrix": {
@@ -47,7 +47,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q2"],
     "matrix": {
@@ -57,7 +57,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -68,7 +68,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -80,7 +80,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q3"],
     "matrix": {
@@ -91,7 +91,7 @@
   },
   {
     "name": "keyword",
-    "priority": "1",
+    "priority": 1,
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {
@@ -100,6 +100,19 @@
       "q2": {"i": ["q3"]},
       "q3": {"l": ["q4"]},
       "q4": {"e": ["q5"]}
+    }
+  },
+  {
+    "name": "keyword",
+    "priority": 1,
+    "start": ["q0"],
+    "finish": ["q5"],
+    "matrix": {
+      "q0": {"b": ["q1"]},
+      "q1": {"r": ["q2"]},
+      "q2": {"e": ["q3"]},
+      "q3": {"a": ["q4"]},
+      "q4": {"k": ["q5"]}
     }
   }
 ]
