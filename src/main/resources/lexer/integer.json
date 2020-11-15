@@ -1,6 +1,7 @@
 [
   {
     "name": "integer",
+    "priority": "3",
     "start": ["q0"],
     "finish": ["q1"],
     "inputs": {

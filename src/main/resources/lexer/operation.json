@@ -1,6 +1,7 @@
 [
   {
     "name": "operation",
+    "priority": "4",
     "start": ["q0"],
     "finish": ["q1", "q2", "q3", "q4", "q5", "q6"],
     "inputs": {

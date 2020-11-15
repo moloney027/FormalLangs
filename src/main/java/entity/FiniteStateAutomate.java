@@ -9,8 +9,10 @@ import java.util.Set;
 public class FiniteStateAutomate {
 
     private String name;
+    private String priority;
     private Set<String> start;
     private Set<String> finish;
+
     private Map<String, Set<String>> inputs;
     private Map<String, Map<String, Set<String>>> matrix;
 
@@ -23,6 +25,14 @@ public class FiniteStateAutomate {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     public Set<String> getStart() {

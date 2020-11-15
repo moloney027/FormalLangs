@@ -24,8 +24,8 @@ public class Pair<K, V> {
 
     @Override
     public String toString() {
-        return "{" +
-                "допускается ли автоматом = " + element0 +
+        return " {" +
+                "допуск автоматом = " + element0 +
                 ", количество символов = " + element1 +
                 '}';
     }

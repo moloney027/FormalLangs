@@ -1,6 +1,7 @@
 [
   {
     "name": "real",
+    "priority": "2",
     "start": ["q0"],
     "finish": ["q2", "q3", "q4", "q6"],
     "inputs": {

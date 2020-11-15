@@ -1,6 +1,7 @@
 [
   {
     "name": "bool",
+    "priority": "1",
     "start": ["q0"],
     "finish": ["q4"],
     "matrix": {
@@ -12,6 +13,7 @@
   },
   {
     "name": "bool",
+    "priority": "1",
     "start": ["q0"],
     "finish": ["q5"],
     "matrix": {

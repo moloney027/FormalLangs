@@ -13,6 +13,9 @@ public class StateMachineOperation {
     }
 
     public Map<String, Set<String>> forCreateInputs(FiniteStateAutomate fsa) {
+        if (fsa.getInputs() == null) {
+            return null;
+        }
         Map<String, Set<String>> newInputs = new HashMap<>();
         Map<String, Set<String>> inputs = fsa.getInputs();
         Set<String> newSetForInput = new HashSet<>();
@@ -48,15 +51,25 @@ public class StateMachineOperation {
             listOfInputs.add("char");
             listOfInputs.add(char_);
         }
-        String sign_ = null;
+        String signForId_ = null, signForInteger_ = null, signForSpecial_ = null;
         if (fsa.getName().equals("id") && checkNotNull(inputs.get("sign"))) {
-            sign_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-<>!#*/&$@~]", "");
+            signForId_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-<>!#*/&$@~]", "");
         } else if ((fsa.getName().equals("integer") || fsa.getName().equals("real")) && (checkNotNull(inputs.get("sign")))) {
-            sign_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-]", "");
+            signForInteger_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^+-]", "");
+        } else if (fsa.getName().equals("special") && checkNotNull(inputs.get("sign"))) {
+            signForSpecial_ = inputs.get("sign").stream().findFirst().get().replaceAll("[^.,:;!?(){}\\[\\]]", "");
         }
-        if (sign_ != null) {
+        if (signForId_ != null) {
             listOfInputs.add("sign");
-            listOfInputs.add(sign_);
+            listOfInputs.add(signForId_);
+        }
+        if (signForInteger_ != null) {
+            listOfInputs.add("sign");
+            listOfInputs.add(signForInteger_);
+        }
+        if (signForSpecial_ != null) {
+            listOfInputs.add("sign");
+            listOfInputs.add(signForSpecial_);
         }
 
 
@@ -130,9 +143,11 @@ public class StateMachineOperation {
     }
 
     public String getType(FiniteStateAutomate fsa, char item) {
-        for (Map.Entry<String, Set<String>> inp : fsa.getInputs().entrySet()) {
-            if (inp.getValue().contains(String.valueOf(item))) {
-                return inp.getKey();
+        if (fsa.getInputs() != null) {
+            for (Map.Entry<String, Set<String>> inp : fsa.getInputs().entrySet()) {
+                if (inp.getValue().contains(String.valueOf(item))) {
+                    return inp.getKey();
+                }
             }
         }
         return String.valueOf(item);
