@@ -175,8 +175,8 @@ public class StateMachineOperation {
     public static Pair<String, String> parse(String input, int skip) throws IOException {
         Integer priority = 0;
         Integer longValue = 0;
-        String newInput = null;
         String nameAutomate = null;
+        String newInput = null;
         List<FiniteStateAutomate[]> finiteStateAutomates = CreateListFSA.create();
         for (FiniteStateAutomate[] automates : finiteStateAutomates) {
             for (FiniteStateAutomate fsa : automates) {
@@ -186,14 +186,14 @@ public class StateMachineOperation {
                 Pair<Boolean, Integer> pairMax = max(fsa, input, skip);
                 if (pairMax.getElement0()) {
                     if (pairMax.getElement1() > longValue) {
+                        nameAutomate = fsa.getName();
                         newInput = input.substring(skip, pairMax.getElement1() + skip);
                         longValue = pairMax.getElement1();
-                        nameAutomate = fsa.getName();
                         priority = fsa.getPriority();
                     } else if (pairMax.getElement1().equals(longValue) && fsa.getPriority() > priority) {
+                        nameAutomate = fsa.getName();
                         newInput = input.substring(skip, pairMax.getElement1() + skip);
                         longValue = pairMax.getElement1();
-                        nameAutomate = fsa.getName();
                         priority = fsa.getPriority();
                     }
                 }
