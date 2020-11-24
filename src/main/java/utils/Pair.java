@@ -8,7 +8,7 @@ public class Pair<K, V> {
     private V element1;
 
     public static <K, V> Pair<K, V> createPair(K element0, V element1) {
-        return new Pair<K, V>(element0, element1);
+        return new Pair<>(element0, element1);
     }
 
     public Pair(K element0, V element1) {
@@ -40,7 +40,7 @@ public class Pair<K, V> {
 
     @Override
     public String toString() {
-        return "{ " + element0 + ", " + element1 + " }";
+        return "{класс лексем: " + element0 + ";  данная лексема: \"" + element1 + "\"}";
     }
 
 }

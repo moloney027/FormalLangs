@@ -3,22 +3,22 @@ package init;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.FiniteStateAutomate;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class CreateListFSA {
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static final String path = "C:\\\\Projects\\\\FormalLangs\\\\src\\\\main\\\\resources\\\\lexer";
 
-    public void findFiles(File item, List<File> resultListFiles) {
+    public static void findFiles(File item, List<File> resultListFiles) {
         if (item.isDirectory()) {
             if (item.listFiles() != null) {
-                for (File file : item.listFiles()) {
+                for (File file : Objects.requireNonNull(item.listFiles())) {
                     findFiles(file, resultListFiles);
                 }
             }
@@ -27,19 +27,12 @@ public class CreateListFSA {
         }
     }
 
-    public List<FiniteStateAutomate[]> create() throws IOException {
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-//        System.out.println("Введите путь к папке: (C:\\\\Projects\\\\FormalLangs\\\\src\\\\main\\\\resources\\\\lexer)");
-//        String path = bf.readLine();
-        String path = "C:\\\\Projects\\\\FormalLangs\\\\src\\\\main\\\\resources\\\\lexer";
-        File dir = new File(path);
-        List<File> listFiles = new ArrayList<>();
-        findFiles(dir, listFiles);
-//        System.out.println("Список всех файлов: ");
-//        listFiles.forEach(System.out::println);
+    public static List<FiniteStateAutomate[]> create() throws IOException {
+        List<File> allFiles = new ArrayList<>();
         List<FiniteStateAutomate[]> listFSA = new ArrayList<>();
-        for (int i = 0; i < listFiles.size(); i++) {
-            listFSA.add(mapper.readValue(Files.readString(listFiles.get(i).toPath()), FiniteStateAutomate[].class));
+        findFiles(new File(path), allFiles);
+        for (File file : allFiles) {
+            listFSA.add(mapper.readValue(Files.readString(file.toPath()), FiniteStateAutomate[].class));
         }
         return listFSA;
     }
