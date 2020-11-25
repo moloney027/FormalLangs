@@ -3,7 +3,6 @@ package recognition;
 import entity.FiniteStateAutomate;
 import init.CreateListFSA;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import utils.Pair;
 
@@ -17,12 +16,6 @@ class StateMachineOperationTest {
     static CreateListFSA createListFSA;
     static List<FiniteStateAutomate[]> finiteStateAutomates;
 
-    @BeforeAll
-    static void start() throws IOException {
-        createListFSA = new CreateListFSA();
-        finiteStateAutomates = CreateListFSA.create();
-    }
-
     // для создания автоматов
 
     @Test
@@ -32,40 +25,52 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionForCreateInputs() {
+    public void testFunctionForCreateInputs() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         for (FiniteStateAutomate[] fsa : finiteStateAutomates) {
             for (FiniteStateAutomate automate : fsa) {
-                if (StateMachineOperation.forCreateInputs(automate) != null && automate.getInputs() != null) {
+                if (automate.getInputs() != null) {
                     Map<String, Set<String>> createInp = StateMachineOperation.forCreateInputs(automate);
-                    if (createInp != null && createInp.get("digit") != null) {
-                        Assertions.assertEquals(Set.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"), createInp.get("digit"));
-                    }
-                    if (createInp != null && createInp.get("char") != null) {
-                        char[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-                        for (char ch : alphabet) {
-                            Assertions.assertTrue(createInp.get("char").contains(String.valueOf(ch)));
-                        }
-                    }
-                    if (createInp != null && createInp.get("exp") != null) {
-                        Assertions.assertEquals(Set.of("e", "E"), createInp.get("exp"));
-                    }
-                    if (createInp != null && createInp.get("ops") != null) {
-                        Assertions.assertEquals(Set.of("*", "/", "%"), createInp.get("ops"));
-                    }
-                    if (createInp != null && createInp.get("ops2") != null) {
-                        Assertions.assertEquals(Set.of("&", "|", "+", "-"), createInp.get("ops2"));
-                    }
-                    if (createInp != null && createInp.get("whitespace") != null) {
-                        Assertions.assertEquals(Set.of("\n", "\r", "\t", " "), createInp.get("whitespace"));
-                    }
                     if (createInp != null) {
+                        if (createInp.get("digit") != null) {
+                            automate.setInputs(createInp);
+                            Assertions.assertEquals(Set.of("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"), createInp.get("digit"));
+                        }
+                        if (createInp.get("char") != null) {
+                            automate.setInputs(createInp);
+                            char[] alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
+                            for (char ch : alphabet) {
+                                Assertions.assertTrue(createInp.get("char").contains(String.valueOf(ch)));
+                            }
+                        }
+                        if (createInp.get("exp") != null) {
+                            automate.setInputs(createInp);
+                            Assertions.assertEquals(Set.of("e", "E"), createInp.get("exp"));
+                        }
+                        if (createInp.get("ops") != null) {
+                            automate.setInputs(createInp);
+                            Assertions.assertEquals(Set.of("*", "/", "%"), createInp.get("ops"));
+                        }
+                        if (createInp.get("ops2") != null) {
+                            automate.setInputs(createInp);
+                            Assertions.assertEquals(Set.of("&", "|", "+", "-"), createInp.get("ops2"));
+                        }
+                        if (createInp.get("whitespace") != null) {
+                            automate.setInputs(createInp);
+                            Assertions.assertEquals(Set.of("\n", "\r", "\t", " "), createInp.get("whitespace"));
+                        }
                         if (createInp.get("sign") != null && (automate.getName().equals("integer") || automate.getName().equals("real"))) {
+                            automate.setInputs(createInp);
                             Assertions.assertEquals(Set.of("+", "-"), createInp.get("sign"));
                         } else if (createInp.get("sign") != null && automate.getName().equals("id")) {
+                            automate.setInputs(createInp);
                             Assertions.assertEquals(Set.of("+", "-", "<", ">", "!", "#", "*", "/", "&", "$", "@", "~"), createInp.get("sign"));
                         } else if (createInp.get("sign") != null && automate.getName().equals("special")) {
+                            automate.setInputs(createInp);
                             Assertions.assertEquals(Set.of(".", ",", ":", ";", "!", "?", "(", ")", "{", "}", "[", "]"), createInp.get("sign"));
                         }
+
                     }
                 }
             }
@@ -73,7 +78,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionForGetType() {
+    public void testFunctionForGetType() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         for (FiniteStateAutomate[] fsa : finiteStateAutomates) {
             for (FiniteStateAutomate automate : fsa) {
                 if (automate.getInputs() != null && automate.getName().equals("integer")) {
@@ -100,7 +107,9 @@ class StateMachineOperationTest {
     // для первой задачи
 
     @Test
-    public void testFunctionMaxForBool() {
+    public void testFunctionMaxForBool() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaBool = StateMachineOperationTest.finiteStateAutomates.get(0);
         Assertions.assertEquals("bool", fsaBool[0].getName());
         if (fsaBool[0].getInputs() != null) fsaBool[0].setInputs(StateMachineOperation.forCreateInputs(fsaBool[0]));
@@ -115,7 +124,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForDatatype() {
+    public void testFunctionMaxForDatatype() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(1);
         Assertions.assertEquals("datatype", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -160,7 +171,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForId() {
+    public void testFunctionMaxForId() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(2);
         Assertions.assertEquals("id", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -177,7 +190,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForInteger() {
+    public void testFunctionMaxForInteger() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(3);
         Assertions.assertEquals("integer", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -194,7 +209,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForKeyword() {
+    public void testFunctionMaxForKeyword() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(4);
         Assertions.assertEquals("keyword", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -249,7 +266,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForOperation() {
+    public void testFunctionMaxForOperation() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(5);
         Assertions.assertEquals("operation", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -269,7 +288,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForReal() {
+    public void testFunctionMaxForReal() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(6);
         Assertions.assertEquals("real", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -289,7 +310,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForSpecial() {
+    public void testFunctionMaxForSpecial() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(7);
         Assertions.assertEquals("special", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -309,7 +332,9 @@ class StateMachineOperationTest {
     }
 
     @Test
-    public void testFunctionMaxForWhitespace() {
+    public void testFunctionMaxForWhitespace() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         FiniteStateAutomate[] fsaType = StateMachineOperationTest.finiteStateAutomates.get(8);
         Assertions.assertEquals("whitespace", fsaType[0].getName());
         if (fsaType[0].getInputs() != null) fsaType[0].setInputs(StateMachineOperation.forCreateInputs(fsaType[0]));
@@ -327,6 +352,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionCreatePairs() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         String strCode = "while (b > a && !break)";
         List<Pair<String, String>> listPair = StateMachineOperation.createPairs(strCode);
         Assertions.assertEquals(Pair.createPair("keyword", "while"), listPair.get(0));
@@ -347,6 +374,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForBool() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("bool", "true"), StateMachineOperation.parse("true", 0));
         Assertions.assertEquals(Pair.createPair("bool", "false"), StateMachineOperation.parse("false", 0));
         Assertions.assertNotEquals(Pair.createPair("bool", "true"), StateMachineOperation.parse("TRUE", 0));
@@ -355,6 +384,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForDatatype() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("datatype", "boolean"), StateMachineOperation.parse("boolean", 0));
         Assertions.assertEquals(Pair.createPair("datatype", "byte"), StateMachineOperation.parse("byte", 0));
         Assertions.assertEquals(Pair.createPair("datatype", "short"), StateMachineOperation.parse("short", 0));
@@ -367,6 +398,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForId() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("id", "someid"), StateMachineOperation.parse("someid", 0));
         Assertions.assertEquals(Pair.createPair("id", "a_d_d___"), StateMachineOperation.parse("a_d_d___", 0));
         Assertions.assertEquals(Pair.createPair("id", "@"), StateMachineOperation.parse("@", 0));
@@ -381,6 +414,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForInteger() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("integer", "123"), StateMachineOperation.parse("123", 0));
         Assertions.assertEquals(Pair.createPair("integer", "0000"), StateMachineOperation.parse("0000", 0));
         Assertions.assertEquals(Pair.createPair("integer", "3"), StateMachineOperation.parse("+123123", 6));
@@ -391,6 +426,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForKeyword() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("keyword", "begin"), StateMachineOperation.parse("begin", 0));
         Assertions.assertEquals(Pair.createPair("keyword", "else"), StateMachineOperation.parse("else", 0));
         Assertions.assertEquals(Pair.createPair("keyword", "end"), StateMachineOperation.parse("end", 0));
@@ -407,6 +444,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForOperation() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("operation", ">"), StateMachineOperation.parse(">", 0));
         Assertions.assertEquals(Pair.createPair("operation", ">"), StateMachineOperation.parse("<>", 1));
         Assertions.assertEquals(Pair.createPair("operation", "/"), StateMachineOperation.parse("///", 2));
@@ -417,6 +456,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForReal() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("real", "+1."), StateMachineOperation.parse("+1.", 0));
         Assertions.assertEquals(Pair.createPair("real", "-1."), StateMachineOperation.parse("-1.", 0));
         Assertions.assertEquals(Pair.createPair("real", "2e13"), StateMachineOperation.parse("2e13", 0));
@@ -432,6 +473,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForSpecial() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("special", ";"), StateMachineOperation.parse(";", 0));
         Assertions.assertEquals(Pair.createPair("special", "("), StateMachineOperation.parse("(", 0));
         Assertions.assertEquals(Pair.createPair("special", "]"), StateMachineOperation.parse("]", 0));
@@ -440,6 +483,8 @@ class StateMachineOperationTest {
 
     @Test
     public void testFunctionParseForWhitespace() throws IOException {
+        createListFSA = new CreateListFSA();
+        finiteStateAutomates = CreateListFSA.create();
         Assertions.assertEquals(Pair.createPair("whitespace", " "), StateMachineOperation.parse(" ", 0));
         Assertions.assertEquals(Pair.createPair("whitespace", "\n"), StateMachineOperation.parse("\n", 0));
         Assertions.assertEquals(Pair.createPair("whitespace", "\t"), StateMachineOperation.parse("\t", 0));
